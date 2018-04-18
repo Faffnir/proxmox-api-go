@@ -43,6 +43,7 @@ func main() {
 
 	case "getConfig":
 		vmr = proxmox.NewVmRef(vmid)
+		vmr.SetNode(flag.Args()[2])
 		config, err := proxmox.NewConfigQemuFromApi(vmr, c)
 		failError(err)
 		log.Println(config)
