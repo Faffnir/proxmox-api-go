@@ -283,11 +283,14 @@ func (c *Client) SetVmConfig(vmr *VmRef, vmParams map[string]string) (exitStatus
 	reqbody := ParamsToBody(vmParams)
 	url := fmt.Sprintf("/nodes/%s/%s/%d/config", vmr.node, vmr.vmType, vmr.vmId)
 	resp, err := c.session.Post(url, nil, nil, &reqbody)
-	if err == nil {
-		taskResponse := ResponseJSON(resp)
-		exitStatus, err = c.WaitForCompletion(taskResponse)
+	if err != nil {
+		return
 	}
-	return
+	taskResponse := ResponseJSON(resp)
+	if taskResponse["errors"] != nil {
+		return nil, errors.New(fmt.Sprintf("%b", taskResponse["errors"]))
+	}
+	return c.WaitForCompletion(taskResponse)
 }
 
 func (c *Client) ResizeQemuDisk(vmr *VmRef, disk string, moreSizeGB int) (exitStatus interface{}, err error) {
