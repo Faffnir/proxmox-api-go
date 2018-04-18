@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/Telmate/proxmox-api-go/proxmox"
+	"github.com/Faffnir/proxmox-api-go/proxmox"
 	"log"
 	"os"
 	"strconv"
